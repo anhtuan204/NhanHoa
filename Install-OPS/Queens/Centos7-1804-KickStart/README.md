@@ -9,11 +9,12 @@
   - [3.3.Tạo file kickstart hệ điều hành Ubuntu 16.04 và Centos 7](#33tạo-file-kickstart-hệ-điều-hành-ubuntu-1604-và-centos-7)
     - [a.Ubuntu Server 16.04](#aubuntu-server-1604)
     - [b.Centos 7](#bcentos-7)
-- [4.Cấu hình cài đặt tự động cho OpenStack](#4cấu-hình-cài-đặt-tự-động-cho-openstack)
-- [5.Hướng dẫn sử dụng](#5hướng-dẫn-sử-dụng)
-  - [5.1.Tạo file kickstart cho các node OpenStack](#51tạo-file-kickstart-cho-các-node-openstack)
-  - [5.2.Tạo profiles cho Controller, Compute](#52tạo-profiles-cho-controller,-compute)
-- [6.Demo](#6demo)
+- [4.Cài đặt APT-CACHER-NG](#4cài-đặt-apt-cacher-ng)
+- [5.Cấu hình cài đặt tự động cho OpenStack](#4cấu-hình-cài-đặt-tự-động-cho-openstack)
+- [6.Hướng dẫn sử dụng](#5hướng-dẫn-sử-dụng)
+  - [6.1.Tạo file kickstart cho các node OpenStack](#51tạo-file-kickstart-cho-các-node-openstack)
+  - [6.2.Tạo profiles cho Controller, Compute](#52tạo-profiles-cho-controller,-compute)
+- [7.Demo](#6demo)
 
 
 # 1.Mô hình
@@ -89,12 +90,24 @@ Trường "Kernel Options" có nội dung: `interface=eth0 biosdevname=0 net.ifn
 
 Trường "Kernel Options" có nội dung: `biosdevname=0 net.ifnames=0` .  
 
-# 4.Cấu hình cài đặt tự động cho OpenStack
+# 4.Cài đặt APT-CACHER-NG
+\- Sử dụng Cobbler, cài Ubuntu Server 16.04.  
+\- Download script cài đặt Cobbler tại link:  
+[Scripts cài apt-cacher-ng](scripts/apt-cacher-ng_install.sh)  
+
+\- Chú ý: Thiết lập các biến môi trường sao cho phù hợp mô hình.  
+\- Thực hiện lệnh:  
+```
+chmod 755 apt-cacher-ng_install.sh
+source apt-cacher-ng_install.sh
+```
+
+# 5.Cấu hình cài đặt tự động cho OpenStack
 \- Download các file shell scripts. Thực hiện các câu lệnh sau:  
 ```
 yum install subversion -y
-svn export https://github.com/doxuanson/Install-OpenStack/trunk/Queens/Centos7-1804-KickStart/OPS-setup
-svn export https://github.com/doxuanson/Install-OpenStack/trunk/Queens/Centos7-1804-KickStart/kickstart_OPS
+svn export https://github.com/doxuanson/NhanHoa/trunk/Install-OPS/Queens/Centos7-1804-KickStart/OPS-setup
+svn export https://github.com/doxuanson/NhanHoa/trunk/Install-OPS/Queens/Centos7-1804-KickStart/kickstart_OPS
 ```
 
 \- Copy 2 thư mục vừa tải về vào thư mục `/var/www/html` :  
@@ -109,14 +122,14 @@ chmod -R 755 /var/www/html/OPS-setup
 chmod -R 755 /var/www/html/kickstart_OPS
 ```
 
-# 5.Hướng dẫn sử dụng
+# 6.Hướng dẫn sử dụng
 \- Thay đổi nội dung các file `/var/www/html/OPS-setup/config.sh` và `/var/www/html/kickstart_OPS/config.sh` theo mô hình của bạn.  
 
 >Chú ý: Mật khẩu cho node phải đồng nhất trong 2 file cấu hình.
 
 \- Trong bài lab này, mình cài đặt mô hình OpenStack gồm 1 node Controller, nhiều node Compute.  
 
-## 5.1.Tạo file kickstart cho các node OpenStack
+## 6.1.Tạo file kickstart cho các node OpenStack
 \- Dùng các file trong thư mục `/var/www/html/kickstart_OPS` để sinh các file kickstart cho các node OpenStack.  
 ```
 cd /var/www/html/kickstart_OPS
@@ -147,7 +160,7 @@ cp /var/www/html/kickstart_OPS/ks_COM1.ks /var/lib/cobbler/kickstarts
 cp /var/www/html/kickstart_OPS/ks_COM2.ks /var/lib/cobbler/kickstarts
 ```
 
-## 5.2.Tạo profiles cho Controller, Compute
+## 6.2.Tạo profiles cho Controller, Compute
 \- Controller:  
 <img src="images/huongdansd-1.png" />
 
@@ -157,7 +170,7 @@ cp /var/www/html/kickstart_OPS/ks_COM2.ks /var/lib/cobbler/kickstarts
 \- Compute2:  
 <img src="images/huongdansd-3.png" />
 
-# 6.Demo
+# 7.Demo
 <img src="images/demo-1.png" />
 
 <img src="images/demo-2.png" />
