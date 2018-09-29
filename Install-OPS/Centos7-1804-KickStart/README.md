@@ -43,10 +43,10 @@ source cobbler-install.sh
 \- Download file iso của các hệ điều hành về, ở đây tôi download **Ubuntu Server 16.04** và **Centos 7**. Thực hiện lệnh:  
 ```
 wget http://releases.ubuntu.com/xenial/ubuntu-16.04.5-server-amd64.iso
-wget http://centos-hn.viettelidc.com.vn/7/isos/x86_64/CentOS-7-x86_64-DVD-1804.iso
+wget http://centos-hn.viettelidc.com.vn/7/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso
 ```
 
-Sau khi download xong ta có 2 file `ubuntu-16.04.5-server-amd64.iso` và `CentOS-7-x86_64-DVD-1804.iso` .  
+Sau khi download xong ta có 2 file `ubuntu-16.04.5-server-amd64.iso` và `CentOS-7-x86_64-Minimal-1804.iso` .  
 \- Thực hiện mount iso và import vào Cobbler. Thực hiện lệnh sau:  
 Ubuntu:  
 ```
@@ -58,7 +58,7 @@ cobbler import --arch=x86_64 --path=/mnt/ubuntu1604 --name=Ubuntu1604
 Centos:  
 ```
 mkdir /mnt/centos7
-mount -o loop CentOS-7-x86_64-DVD-1804.iso /mnt/centos7
+mount -o loop CentOS-7-x86_64-Minimal-1804.iso /mnt/centos7
 cobbler import --arch=x86_64 --path=/mnt/centos7 --name=Centos7
 ```
 
