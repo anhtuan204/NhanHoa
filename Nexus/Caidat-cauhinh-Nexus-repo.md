@@ -4,8 +4,10 @@
 # MỤC LỤC
 
 
+## 3.0.Mô hình
+<img src="images/caidat-cauhinh-1.png" />
 
-## 3.1.Cài đặt
+## 3.1.Cài đặt Nexus Repo server
 \- Cài đặt Nexus Repo 3.9 trên Centos 7.5.1804.
 
 ### 3.1.1.Cài đặt Java Runtime Environment
@@ -104,8 +106,126 @@ chkconfig --levels 345 nexus on
 service nexus start
 ```
 
-## 3.2.Cấu hình
+## 3.2.Cấu hình Nexus Repo
 
+
+## 3.3.Cài đặt plugin Nexus repository APT
+\- Cài đặt git:  
+```
+yum install git -y
+```
+
+\- Clone project `nexus-repository-apt` :  
+```
+git clone https://github.com/sonatype-nexus-community/nexus-repository-apt
+```
+
+\- Thực hiện các lệnh sau:  
+```
+cd nexus-repository-apt
+git tag -l
+git checkout 1.0.5
+git branch -D master
+git checkout -b master
+```
+
+\- Cài đặt Apache Maven:  
+- Tải file apache-maven:  
+```
+cd /usr/local/src
+wget http://www-us.apache.org/dist/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+```
+
+- Sau khi tải về, giải nén và đổi tên thư mục:   
+```
+tar -xf apache-maven-3.5.4-bin.tar.gz
+mv apache-maven-3.5.4/ apache-maven/ 
+```
+
+- Cấu hình biến môi trường cho Apache Maven:  
+```
+cd /etc/profile.d/
+vi maven.sh
+```
+
+Thêm nội dung sau vào file `maven.sh`:  
+```
+# Apache Maven Environment Variables
+# MAVEN_HOME for Maven 1 - M2_HOME for Maven 2
+export M2_HOME=/usr/local/src/apache-maven
+export PATH=${M2_HOME}/bin:${PATH}
+```
+
+- Thêm quyền thực thi cho file `maven.sh` và load cấu hình:  
+```
+chmod +x maven.sh
+source /etc/profile.d/maven.sh
+```
+
+- Kiểm tra phiên bản Apache Maven:  
+```
+mvn --version
+```
+
+Nội dung đầu ra tương tự như sau:  
+```
+
+```
+
+\- Xây dựng plugin: vẫn trong thư mục nexus-repository-apt, thực hiện lệnh:  
+```
+mvn
+```
+
+Quá trình thực hiện khá lâu, khoảng 10' - 20'.  
+
+\- Tạo file `.jar`: vẫn trong thư mục nexus-repository-apt, thực hiện lệnh:  
+```
+mvn package
+```
+
+Thư mục mới được tạo ra có tên `target`, trong thư mục chứa file `nexus-repository-apt-1.0.4.jar`.  
+
+\- Cài đặt:  
+- Stop dịch vụ Nexus:  
+```
+service nexus stop
+```
+
+- Tạo thư mục `/opt/nexus/system/net/staticsnow/nexus-repository-apt/1.0.4`:  
+```
+mkdir -p /opt/nexus/system/net/staticsnow/nexus-repository-apt/1.0.4
+```
+
+- Copy file `nexus-repository-apt-1.0.4.jar` đến thư mục vừa tạo:  
+```
+cp nexus-repository-apt-1.0.4.jar /opt/nexus/system/net/staticsnow/nexus-repository-apt/1.0.4
+```
+
+\- Sửa file `/opt/nexus/system/com/sonatype/nexus/assemblies/nexus-oss-feature/3.9.0-01/nexus-oss-feature-3.9.0-01-features.xml`:  
+```
+        <feature version="3.9.0.01" prerequisite="false" dependency="false">nexus-repository-yum</feature>
++       <feature prerequisite="false" dependency="false">nexus-repository-apt</feature>
+        <feature version="3.9.0.01" prerequisite="false" dependency="false">nexus-repository-gitlfs</feature>
+    </feature>
+```
+
+và  
+```
++ <feature name="nexus-repository-apt" description="net.staticsnow:nexus-repository-apt" version="1.0.4">
++     <details>net.staticsnow:nexus-repository-apt</details>
++     <bundle>mvn:net.staticsnow/nexus-repository-apt/1.0.4</bundle>
++ </feature>
+ </features>
+```
+
+> Chú ý:  
+Dòng có dấu + ở đầu là nội dung cần được thêm.  
+
+\- Start dịch vụ Nexus:  
+```
+service nexus start
+```
 
 
 
