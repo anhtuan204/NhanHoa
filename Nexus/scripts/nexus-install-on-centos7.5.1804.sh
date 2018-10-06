@@ -107,4 +107,4 @@ service nexus start
 # Finally
 echo "###Install complete!###"
 echo "###Access link: <Host_IP_address>:8081###"
-
+echo "###Username: admin ### Password: admin123###"

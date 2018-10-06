@@ -39,8 +39,8 @@ https://gist.github.com/fajrif/1265203
 
 
 - Repo:
-http://archive.ubuntu.com/ubuntu/dists/xenial/main/binary-amd64/
-http://mirror.centos.org/centos/7.5.1804/
+http://archive.ubuntu.com/ubuntu
+http://mirror.centos.org/centos/
 
 
 
