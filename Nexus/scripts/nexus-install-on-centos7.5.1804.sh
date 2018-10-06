@@ -3,9 +3,11 @@
 
 # Note: Install Nexus Repository on Centos 7.5.18.04
 echo "###Install and config Nexus Repository on Centos 7.5.18.04###"
+sleep 3
 
 # Pre install
 echo "###Pre install###"
+sleep 3
 yum update -y
 yum install wget -y
 
@@ -20,11 +22,13 @@ setenforce 0
 
 # Install Java Runtime Environment
 echo "###Install Java Runtime Environment###"
+sleep 3
 wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-8u181-linux-x64.rpm
 yum localinstall jdk-8u181-linux-x64.rpm -y
 
 # Install Nexus Repo 3.9
 echo "###Install Nexus Repo 3.9###"
+sleep 3
 wget http://download.sonatype.com/nexus/3/nexus-3.9.0-01-unix.tar.gz -O /root/nexus-3.9.0-01-unix.tar.gz
 cp /root/nexus-3.9.0-01-unix.tar.gz /opt
 cd /opt
@@ -33,6 +37,7 @@ mv nexus-3.9.0-01 nexus
 
 # Run Nexus Repo as a Service
 echo "###Run Nexus Repo as a Service###"
+sleep 3
 adduser nexus
 usermod -d /opt/nexus nexus
 chown -R nexus:nexus /opt
@@ -45,6 +50,7 @@ service nexus start
 
 # Install plugin Nexus repository APT
 echo "###Install plugin Nexus repository APT###"
+sleep 3
 
 ## Install git
 yum install git -y
@@ -85,6 +91,7 @@ cp /root/nexus-repository-apt/target/nexus-repository-apt-1.0.4.jar /opt/nexus/s
 nexusfile=/opt/nexus/system/com/sonatype/nexus/assemblies/nexus-oss-feature/3.9.0-01/nexus-oss-feature-3.9.0-01-features.xml
 nexusfilebak=/opt/nexus/system/com/sonatype/nexus/assemblies/nexus-oss-feature/3.9.0-01/nexus-oss-feature-3.9.0-01-features.xml.bak
 cp $nexusfile $nexusfilebak
+yum install sed -y
 
 sed -i '20i\<feature prerequisite="false" dependency="false">nexus-repository-apt</feature>' $nexusfile
 
