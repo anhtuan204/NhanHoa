@@ -41,7 +41,7 @@ echo "###Run Nexus Repo as a Service###"
 sleep 3
 adduser nexus
 usermod -d /opt/nexus nexus
-chown -R nexus:nexus /opt
+chown -R nexus:nexus /opt/*
 echo -e "\nrun_as_user=\"nexus\"" >> /opt/nexus/bin/nexus.rc
 ln -s /opt/nexus/bin/nexus /etc/init.d/nexus
 cd /etc/init.d
