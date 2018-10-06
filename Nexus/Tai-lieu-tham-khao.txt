@@ -1,7 +1,9 @@
 - Main page: https://www.sonatype.com/
   - Docs: https://help.sonatype.com/repomanager3
+  https://help.sonatype.com/learning
 - Introduction:
 https://www.sonatype.com/nexus-repository-sonatype
+https://help.sonatype.com/learning/repository-manager-3/repository-management-basics/lesson-3%3A-repository-types
 https://www.sonatype.com/nexus-repository-oss
 https://www.sonatype.com/download-oss-sonatype
 https://www.sonatype.com/nexus-repository-oss-vs.-pro-features
